@@ -203,3 +203,50 @@ def get_current_user_sales():
 		return user_doc.sales_person
 	else :
 		return "no_sales"
+
+def remove_from_skjb(sinv,method):
+	if not sinv.skjb_item :
+		return
+	frappe.db.sql(""" UPDATE `tabSKJB Item`s SET s.`sales_invoice` = "" WHERE s.`name`="{0}" AND s.`sales_invoice`="{1}" """.format(sinv.skjb_item,sinv.name))
+
+@frappe.whitelist()
+def skjb_create_sales_invoice():
+	today = frappe.utils.today()
+	result = frappe.db.sql("""SELECT s.`name`,sp.`name`,s.`jumlah_cicilan`,s.`item_code` 
+		FROM `tabSKJB Item`s JOIN `tabSKPJB`sp ON s.`parent` = sp.`name` 
+		WHERE s.`tanggal`="{0}" AND s.`docstatus`=1 AND sp.`docstatus`=1 
+		AND NOT (s.`item_code` IS NULL OR s.`item_code`="")
+		""".format(today), as_list=1)
+	data = {}
+	for res in result :
+		dt = frappe.new_doc('Sales Invoice')
+		dt.customer = frappe.get_value("SKPJB",res[1],"nama_pembeli")
+		dt.company = frappe.get_value("SKPJB",res[1],"company")
+		dt.debit_to = frappe.get_value("Company",dt.company,"default_receivable_account")
+		dt.skjb_item = res[0]
+		dt.skjb_utj_booking = res[1]
+		cd = dt.append('items')
+		cd.item_code = res[3]
+		cd.rate = res[2]
+		cd.qty = 1
+		dt.save()
+		data[res[0]] = dt.name
+	value_clause = ""
+	for key,value in data.iteritems() :
+		if value_clause == "" :
+			value_clause = """("{0}","{1}")""".format(key,value)
+		else :
+			value_Clause = """{0}, ("{1}","{2}")""".format(key,value)
+	if value_clause != "" :
+		frappe.db.sql(""" INSERT INTO `tabSKJB Item`(`name`,`sales_invoice`) VALUES {0} 
+		ON DUPLICATE KEY UPDATE `sales_invoice` = VALUES(`sales_invoice`)
+		""".format(value_clause))
+		
+#custom
+@frappe.whitelist()
+def add_to_skjb(doc,method):
+	if not doc.amended_from :
+		return
+	if not doc.skjb_item :
+		return
+	frappe.db.sql(""" UPDATE `tabSKJB Item`s SET s.`sales_invoice` = "{1}" WHERE s.`name`="{0}" """.format(doc.skjb_item,doc.name))

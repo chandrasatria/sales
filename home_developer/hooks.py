@@ -78,24 +78,31 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
+doc_events = {
+	"Sales Invoice": {
+		"before_cancel": "home_developer.home_developer.doctype.skjb.skjb.remove_from_skjb",
+		"validate":"home_developer.home_developer.doctype.skjb.skjb.add_to_skjb"
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
-#	}
-# }
+	},
+	"Lead":{
+		"validate":"home_developer.custom.check_stock"
+	},
+	"Customer":{
+		"validate":"home_developer.custom.get_lead_source"
+	}
+ }
 
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"home_developer.tasks.all"
 # 	],
-# 	"daily": [
-# 		"home_developer.tasks.daily"
-# 	],
+	"daily": [
+		"home_developer.home_developer.doctype.skjb.skjb.skjb_create_sales_invoice"
+	],
 # 	"hourly": [
 # 		"home_developer.tasks.hourly"
 # 	],
@@ -105,7 +112,7 @@ app_license = "MIT"
 # 	"monthly": [
 # 		"home_developer.tasks.monthly"
 # 	]
-# }
+}
 
 # Testing
 # -------
