@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include home_developer *.css
+recursive-include home_developer *.csv
+recursive-include home_developer *.html
+recursive-include home_developer *.ico
+recursive-include home_developer *.js
+recursive-include home_developer *.json
+recursive-include home_developer *.md
+recursive-include home_developer *.png
+recursive-include home_developer *.py
+recursive-include home_developer *.svg
+recursive-include home_developer *.txt
+recursive-exclude home_developer *.pyc
