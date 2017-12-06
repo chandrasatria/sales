@@ -28,6 +28,7 @@ class TandaTerima(Document):
 		dt.document_status = self.workflow_state
 		dt.posting_date = self.posting_date
 		dt.value = self.utj
+		dt.company = self.company
 		dt.transition_date = frappe.utils.today()
 		dt.save()
 		self.old_workflow = self.workflow_state
