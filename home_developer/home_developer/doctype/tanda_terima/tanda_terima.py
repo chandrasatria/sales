@@ -32,3 +32,21 @@ class TandaTerima(Document):
 		dt.transition_date = frappe.utils.today()
 		dt.save()
 		self.old_workflow = self.workflow_state
+@frappe.whitelist()
+def make_skpjb(source_name, target_doc=None):
+	def set_missing_values(source, target):
+		pass
+
+	doclist = get_mapped_doc("Tanda Terima", source_name, 	{
+		"Tanda Terima": {
+			"doctype": "SKPJB",
+			"validation": {
+				"docstatus": ["=", 1]
+			},"field_map": {
+				"utj": "rabat_1",
+				"terbilang_utj": "terbilang_rabat_1"
+			}
+		}
+	}, target_doc, set_missing_values)
+
+	return doclist
