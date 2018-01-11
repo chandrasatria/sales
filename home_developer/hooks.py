@@ -74,14 +74,18 @@ app_license = "MIT"
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
 # }
 
+fixtures = [
+	{"dt":"Print Format", "filters": {"doc_type": "SKPJB"}},
+	{"dt":"Custom Field"}
+]
 # Document Events
 # ---------------
 # Hook on document methods and events
 
 doc_events = {
 	"Sales Invoice": {
-		"before_cancel": "home_developer.home_developer.doctype.skjb.skjb.remove_from_skjb",
-		"validate":"home_developer.home_developer.doctype.skjb.skjb.add_to_skjb"
+	#	"before_cancel": "home_developer.home_developer.doctype.skjb.skjb.remove_from_skjb",
+	#	"validate":"home_developer.home_developer.doctype.skjb.skjb.add_to_skjb"
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
 	},
@@ -101,7 +105,7 @@ scheduler_events = {
 # 		"home_developer.tasks.all"
 # 	],
 	"daily": [
-		"home_developer.home_developer.doctype.skjb.skjb.skjb_create_sales_invoice"
+#		"home_developer.home_developer.doctype.skjb.skjb.skjb_create_sales_invoice"
 	],
 # 	"hourly": [
 # 		"home_developer.tasks.hourly"
@@ -125,4 +129,3 @@ scheduler_events = {
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "home_developer.event.get_events"
 # }
-

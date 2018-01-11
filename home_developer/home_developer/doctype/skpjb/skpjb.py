@@ -81,10 +81,11 @@ class SKPJB(Document):
 			digit = "0" + digit
 		
 		singkatan = self.kavling
-		date = frappe.utils.today()
+		#date = frappe.utils.today()
+		date = self.posting_date
 		month = date[5:7]
 		year = date[0:4]
-		self.name = digit + '/SKPJB/' + singkatan + '/' + month + '/' + year
+		self.name = digit + '/SKPJB/' + singkatan + '/' + month + '/' + year 
 		
 		#update number count
 		temp = count.next_digit + 1
@@ -179,13 +180,15 @@ def make_invoice(cdn,nama_pembeli,company):
 @frappe.whitelist()
 def get_harga_by_type(type,kavling) :
 	kav_doc = frappe.get_doc("Kavling",kavling)
+	harga_sudut = kav_doc.total_harga_kelebihan_sudut
+	harga_tanah = kav_doc.total_harga_kelebihan_tanah
 	pr = 0
 	if type == "KPR" :
-		pr = kav_doc.harga_cicilan
+		pr = kav_doc.harga_cicilan + harga_sudut + harga_tanah 
 	elif type == "Cash Keras" :
-		pr = kav_doc.cash_keras
+		pr = kav_doc.cash_keras + harga_sudut + harga_tanah
 	elif type == "Tunai Bertahap" :
-		pr = kav_doc.harga_cicilan
+		pr = kav_doc.harga_cicilan + harga_sudut + harga_tanah
 	return pr
 
 @frappe.whitelist()
