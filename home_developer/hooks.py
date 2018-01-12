@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 from . import __version__ as app_version
 
-app_name = "home_developer"
-app_title = "Home Developer"
+app_name = "sales"
+app_title = "Sales"
 app_publisher = "Frappe"
-app_description = "Home Developer"
+app_description = "Sales"
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "info@frappe.io"
@@ -90,10 +90,10 @@ doc_events = {
 # 		"on_trash": "method"
 	},
 	"Lead":{
-		"validate":"home_developer.custom.check_stock"
+		"validate":"sales.custom.check_stock"
 	},
 	"Customer":{
-		"validate":"home_developer.custom.get_lead_source"
+		"validate":"sales.custom.get_lead_source"
 	}
  }
 
