@@ -13,9 +13,9 @@ with open('home_developer/__init__.py', 'rb') as f:
 requirements = parse_requirements("requirements.txt", session="")
 
 setup(
-	name='home_developer',
+	name='sales',
 	version=version,
-	description='Home Developer',
+	description='Sales',
 	author='Frappe',
 	author_email='info@frappe.io',
 	packages=find_packages(),
